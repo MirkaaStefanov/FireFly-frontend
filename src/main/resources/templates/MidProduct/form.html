@@ -1,84 +1,69 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Product Form</title>
-  <style>
-    body {
-        font-family: Arial, sans-serif;
-        max-width: 600px;
-        margin: 0 auto;
-        padding: 20px;
-    }
-    .form-group {
-        margin-bottom: 15px;
-    }
-    label {
-        display: block;
-        margin-bottom: 5px;
-        font-weight: bold;
-    }
-    input[type="text"],
-    input[type="number"],
-    textarea,
-    select {
-        width: 100%;
-        padding: 8px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        box-sizing: border-box;
-    }
-    textarea {
-        height: 100px;
-        resize: vertical;
-    }
-    button {
-        background-color: #4CAF50;
-        color: white;
-        padding: 10px 15px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 16px;
-    }
-    button:hover {
-        background-color: #45a049;
-    }
-  </style>
-</head>
+  <title>Product Information</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" th:href="@{/css/styles.css}"> </head>
 <body>
-<h1>Product Information</h1>
-<form th:action="@{/midProduct/submit}" method="post" th:object="${product}" enctype="multipart/form-data">
-  <!-- Hidden field for ID (used for updates) -->
-  <input type="hidden" id="id" name="id">
 
-  <div class="form-group">
-    <label for="name">Product Name:</label>
-    <input type="text" id="name" name="name" required>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<div class="main-content">
+
+  <div class="page-header">
+    <h1 class="page-title">Birlesik Alet ekle</h1>
   </div>
 
-  <div class="form-group">
-    <label for="description">Description:</label>
-    <textarea id="description" name="description" required></textarea>
-  </div>
+  <div class="form-container">
 
-  <div class="form-group">
-    <label for="price">Price:</label>
-    <input type="number" id="price" name="price" step="0.01" min="0" required>
-  </div>
+    <form th:action="@{/midProduct/submit}" method="post" th:object="${product}" enctype="multipart/form-data">
+      <input type="hidden" th:field="*{id}">
 
-  <div class="form-group">
-    <label for="quantity">Quantity:</label>
-    <input type="number" id="quantity" name="quantity" min="0" required>
-  </div>
+      <div class="mb-3">
+        <label for="name" class="form-label">Product Name:</label>
+        <input type="text" id="name" class="form-control" th:field="*{name}" required>
+      </div>
 
-  <div class="form-group">
-    <label for="multipartFile">Upload Image:</label>
-    <input type="file" id="multipartFile" name="multipartFile" accept="image/*">
-  </div>
+      <div class="mb-3">
+        <label for="description" class="form-label">Description:</label>
+        <textarea id="description" class="form-control" rows="4" th:field="*{description}" required></textarea>
+      </div>
 
-  <button type="submit">Submit</button>
-</form>
+      <div class="mb-3">
+        <label for="price" class="form-label">Price (tl.):</label>
+        <input type="number" id="price" class="form-control" step="0.01" min="0" th:field="*{price}" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="quantity" class="form-label">Quantity:</label>
+        <input type="number" id="quantity" class="form-control" min="0" th:field="*{quantity}" required>
+      </div>
+
+      <div class="mb-4"> <label for="multipartFile" class="form-label">Product Image:</label>
+        <input type="file" id="multipartFile" class="form-control" name="multipartFile" accept="image/*">
+        <div th:if="${product.image != null}" class="mt-2">
+          <small>Current Image:</small><br>
+          <img th:src="'data:image/jpeg;base64,' + ${product.image}" alt="Current Image" style="max-height: 100px; margin-top: 5px; border-radius: 4px;">
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-submit-custom">Submit Product</button>
+
+    </form>
+
+  </div> </div> <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  function toggleSidebar() {
+      document.querySelector('.sidebar').classList.toggle('collapsed');
+      document.querySelector('.main-content').classList.toggle('sidebar-collapsed');
+  }
+   // Optional: Collapse sidebar by default on smaller screens
+   // if (window.innerWidth < 768) { ... }
+</script>
+
 </body>
 </html>

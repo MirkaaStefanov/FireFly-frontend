@@ -1,19 +1,42 @@
-<header class="header">
-  <div class="header-container">
-    <a href="/" class="logo">Gym<span>Equip</span></a>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
 
-    <nav class="nav">
-      <ul class="nav-menu">
-        <li><a href="/" class="nav-link">Dashboard</a></li>
-        <li><a href="/products" class="nav-link">Products</a></li>
-        <li><a href="/orders" class="nav-link">Orders</a></li>
-        <li><a href="/inventory" class="nav-link">Inventory</a></li>
-      </ul>
-    </nav>
-
-    <div class="header-actions">
-      <button class="btn btn-outline">Login</button>
-      <button class="btn btn-primary">Register</button>
-    </div>
+<div class="sidebar" th:fragment="header">
+  <div class="sidebar-header">
+    <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
   </div>
-</header>
+  <ul class="nav flex-column">
+    <li class="nav-item">
+      <a class="nav-link active" href="#"> <i class="fas fa-home fa-fw me-2"></i> <span class="nav-text">Home</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#"> <i class="fas fa-box-open fa-fw me-2"></i> <span class="nav-text">Apparatus</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" th:href="@{/finalProduct/all}"> <i class="fas fa-tools fa-fw me-2"></i> <span class="nav-text">Aletler</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" th:href="@{/midProduct/all}"> <i class="fas fa-tools fa-fw me-2"></i> <span class="nav-text">Birlesik Malzemeler</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" th:href="@{/firstProduct/all}"> <i class="fas fa-tools fa-fw me-2"></i> <span class="nav-text">Ilk Malzemeler</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#"> <i class="fas fa-chart-line fa-fw me-2"></i> <span class="nav-text">Overview</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#"> <i class="fas fa-dolly-flatbed fa-fw me-2"></i><span class="nav-text">Orders</span>
+      </a>
+    </li>
+  </ul>
+</div>
+
+</body>
+</html>

@@ -41,6 +41,7 @@ public class FinalProductNeedController {
     @GetMapping("/all/{id}")
     public String findAllForFinalProduct(@PathVariable Long id, Model model){
         List<FinalProductNeedDTO> allProducts = finalProductNeedClient.findAllForFinalProduct(id);
+        model.addAttribute("finalProductId", id);
         model.addAttribute("products", allProducts);
         return "FinalProductNeed/allForProduct";
     }

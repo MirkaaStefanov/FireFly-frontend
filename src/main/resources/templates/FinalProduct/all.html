@@ -1,251 +1,199 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Кашони</title>
-  <link rel="icon" type="image/x-icon" href="/img/photos/noImage.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aletler - Продукти</title>
+    <link rel="icon" type="image/x-icon" href="/img/photos/noImage.png">
 
-  <!-- Bootstrap 5 CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-  <style>
-    :root {
-        --primary-color: #3498db;
-        --secondary-color: #f8f9fa;
-        --accent-color: #e74c3c;
-        --text-color: #333;
-        --light-text: #6c757d;
-    }
-
-    body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background-color: #f5f5f5;
-        color: var(--text-color);
-    }
-
-    .card {
-        border-radius: 10px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        border: none;
-        margin-bottom: 2rem;
-    }
-
-    .card-header {
-        background-color: var(--primary-color);
-        color: white;
-        border-radius: 10px 10px 0 0 !important;
-        padding: 1.25rem;
-    }
-
-    .table-responsive {
-        border-radius: 0 0 10px 10px;
-        overflow: hidden;
-    }
-
-    table {
-        margin-bottom: 0;
-    }
-
-    thead {
-        background-color: var(--secondary-color);
-    }
-
-    th {
-        font-weight: 600;
-        text-transform: uppercase;
-        font-size: 0.8rem;
-        letter-spacing: 0.5px;
-    }
-
-    .product-image {
-        width: 80px;
-        height: 80px;
-        object-fit: cover;
-        border-radius: 5px;
-        border: 1px solid #ddd;
-    }
-
-    .btn-primary {
-        background-color: var(--primary-color);
-        border-color: var(--primary-color);
-    }
-
-    .btn-primary:hover {
-        background-color: #2980b9;
-        border-color: #2980b9;
-    }
-
-    .search-container {
-        position: relative;
-        margin-bottom: 1.5rem;
-    }
-
-    .search-container i {
-        position: absolute;
-        left: 15px;
-        top: 12px;
-        color: var(--light-text);
-    }
-
-    .search-input {
-        padding-left: 40px;
-        border-radius: 20px;
-        border: 1px solid #ddd;
-    }
-
-    .results-badge {
-        background-color: var(--primary-color);
-        color: white;
-        border-radius: 50%;
-        width: 25px;
-        height: 25px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 0.8rem;
-        margin-left: 5px;
-    }
-
-    .low-stock {
-        background-color: #ffdddd;
-        color: #d32f2f;
-        font-weight: bold;
-        padding: 3px 8px;
-        border-radius: 4px;
-    }
-
-    .medium-stock {
-        background-color: #fff3cd;
-        color: #856404;
-        font-weight: bold;
-        padding: 3px 8px;
-        border-radius: 4px;
-    }
-
-    .good-stock {
-        background-color: #d4edda;
-        color: #155724;
-        font-weight: bold;
-        padding: 3px 8px;
-        border-radius: 4px;
-    }
-
-    .action-buttons .btn {
-        padding: 0.25rem 0.5rem;
-        font-size: 0.8rem;
-    }
-  </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
-<div class="container py-4">
-  <div class="card">
-    <div class="card-header d-flex justify-content-between align-items-center">
-      <h5 class="card-title mb-0">Aletler
-      </h5>
-      <th:block th:if="${session.sessionToken != null and session.sessionRole == 'ADMIN'}">
-        <a href="/create" class="btn btn-light">
-          <i class="fas fa-plus me-2"></i>Добави Кашон
-        </a>
-      </th:block>
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+<div class="main-content">
+
+    <div class="page-header">
+        <h1 class="page-title">Aletler</h1>
     </div>
-    <div class="card-body">
-      <div class="search-container mb-4">
-        <i class="fas fa-search"></i>
-        <input type="text" id="searchInput" class="form-control search-input" placeholder="Търсене по име или описание...">
-        <div class="mt-2">
-          <span class="text-muted">Резултати: </span>
-          <span id="resultsCount" class="results-badge">0</span>
+
+    <div class="table-container enhanced-container">
+
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+
+            <div class="flex-grow-1" style="min-width: 250px; max-width: 600px;">
+                <div class="search-container">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" id="searchInput" class="form-control search-input"
+                           placeholder="Търсене по Име на компонент...">
+                </div>
+                <div class="mt-2 search-results-display">
+                    <span class="text-muted small">Резултати: </span>
+                    <span id="resultsCount" class="results-badge">0</span>
+                </div>
+            </div>
+            <div class="flex-shrink-0">
+                <a th:href="@{/finalProduct/create}" class="btn btn-add-product">
+                    <i class="fas fa-plus me-1"></i> Добави уред </a>
+            </div>
         </div>
-      </div>
-
-      <div class="table-responsive">
-        <table class="table table-hover">
-          <thead>
-          <tr>
-            <th style="width: 100px;">Снимка</th>
-            <th>ID</th>
-            <th>Име</th>
-            <th>Описание</th>
-            <th>Цена</th>
-            <th>Наличност</th>
-            <th>Действия</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr th:each="product : ${products}" class="product-row">
-            <td>
-              <img th:src="'data:image/jpeg;base64,' + ${product.image}"
-                   alt="Product Image" class="product-image">
-            </td>
-            <td th:text="${product.id}"></td>
-            <td th:text="${product.name}"></td>
-            <td>
-              <small class="text-muted" th:text="${product.description}"></small>
-            </td>
-            <td th:text="${#numbers.formatDecimal(product.price, 1, 2) + ' лв.'}"></td>
-            <td>
-                                    <span th:if="${product.quantity <= 50}"
-                                          class="low-stock"
-                                          th:text="${product.quantity + ' бр.'}"></span>
-              <span th:if="${product.quantity > 50 and product.quantity <= 200}"
-                    class="medium-stock"
-                    th:text="${product.quantity + ' бр.'}"></span>
-              <span th:if="${product.quantity > 200}"
-                    class="good-stock"
-                    th:text="${product.quantity + ' бр.'}"></span>
-            </td>
-            <td class="action-buttons">
-              <th:block th:if="${session.sessionToken != null and session.sessionRole == 'ADMIN'}">
-                <a th:href="@{/edit/{id}(id=${product.id})}"
-                   class="btn btn-sm btn-outline-primary me-1">
-                  <i class="fas fa-edit"></i>
-                </a>
-                <a th:href="@{/delete/{id}(id=${product.id})}"
-                   class="btn btn-sm btn-outline-danger">
-                  <i class="fas fa-trash"></i>
-                </a>
-              </th:block>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle enhanced-table">
+                <thead>
+                <tr>
+                    <th scope="col">Снимка</th>
+                    <th scope="col">ID</th>
+                    <th scope="col">Име</th>
+                    <th scope="col">Описание</th>
+                    <th scope="col" class="text-end">Цена</th>
+                    <th scope="col" class="text-center">Наличност</th>
+                    <th scope="col" class="text-center">Действия</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="product : ${products}" class="product-row">
+                    <td>
+                        <img th:src="${product.image != null ? 'data:image/jpeg;base64,' + product.image : '/img/photos/noImage.png'}"
+                             alt="Product Image" class="product-table-image">
+                    </td>
+                    <td th:text="${product.id}"></td>
+                    <td th:text="${product.name}"></td>
+                    <td>
+                        <small class="text-muted" th:text="${product.description ?: 'N/A'}"></small>
+                    </td>
+                    <td class="text-end price-cell"
+                        th:text="${#numbers.formatDecimal(product.price, 1, 'COMMA', 2, 'POINT') + ' tl.'}"></td>
+                    <td class="text-center">
+                        <span th:if="${product.quantity == null or product.quantity <= 0}"
+                              class="badge bg-secondary quantity-badge">0 бр.</span>
+                        <span th:if="${product.quantity > 0 and product.quantity <= 50}"
+                              class="badge bg-danger quantity-badge" th:text="${product.quantity + ' бр.'}"></span>
+                        <span th:if="${product.quantity > 50 and product.quantity <= 200}"
+                              class="badge bg-warning text-dark quantity-badge"
+                              th:text="${product.quantity + ' бр.'}"></span>
+                        <span th:if="${product.quantity > 200}" class="badge bg-success quantity-badge"
+                              th:text="${product.quantity + ' бр.'}"></span>
+                    </td>
+                    <td class="text-center">
+                        <a th:href="@{/finalProductNeed/all/{id}(id=${product.id})}"
+                           class="btn btn-warning btn-sm action-button">Needed</a>
+                    </td>
+                </tr>
+                <tr th:if="${products == null or #lists.isEmpty(products)}">
+                    <td colspan="7" class="text-center text-muted p-5">Няма налични продукти.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-  </div>
 </div>
-
-<!-- Bootstrap 5 JS Bundle with Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-      const searchInput = document.getElementById('searchInput');
-      const resultsCount = document.getElementById('resultsCount');
-      const productRows = document.querySelectorAll('.product-row');
+    // Sidebar Toggle Function
+    function toggleSidebar() {
+        const sidebar = document.querySelector('.sidebar');
+        const mainContent = document.querySelector('.main-content');
+        if (sidebar && mainContent) {
+            sidebar.classList.toggle('collapsed');
+            // The main content margin adjustment is handled by CSS (.sidebar.collapsed + .main-content)
+            // If CSS doesn't use the sibling selector, you might need JS:
+            // mainContent.classList.toggle('sidebar-collapsed');
+        } else {
+            console.error("Sidebar or Main Content element not found for toggle.");
+        }
+    }
 
-      searchInput.addEventListener('input', function() {
-          const filter = this.value.toLowerCase();
-          let visibleCount = 0;
+    // Add event listener for the toggle button if it exists
+    // (Assuming the toggle button is part of the fragments/header :: header)
+    document.addEventListener('DOMContentLoaded', function() {
+        const toggleButton = document.querySelector('.toggle-btn'); // Make sure this selector matches your button
+        if (toggleButton) {
+            toggleButton.addEventListener('click', toggleSidebar);
+        }
 
-          productRows.forEach(row => {
-              const name = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
-              const description = row.querySelector('td:nth-child(4)').textContent.toLowerCase();
+        // Optional: Collapse sidebar by default on smaller screens using JS check
+        // if (window.innerWidth < 768) {
+        //     const sidebar = document.querySelector('.sidebar');
+        //     if (sidebar && !sidebar.classList.contains('collapsed')) {
+        //         toggleSidebar(); // Collapse if not already collapsed by CSS
+        //     }
+        // }
+    });
 
-              if (name.includes(filter) || description.includes(filter)) {
-                  row.style.display = '';
-                  visibleCount++;
-              } else {
-                  row.style.display = 'none';
-              }
-          });
 
-          resultsCount.textContent = visibleCount;
-      });
-  });
+    // ## START: Search Bar JavaScript ##
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchInput = document.getElementById('searchInput');
+        const resultsCountElement = document.getElementById('resultsCount');
+        // Ensure selector targets rows within the correct table body
+        const productTableBody = document.querySelector('.enhanced-table tbody');
+
+        if (!searchInput || !resultsCountElement || !productTableBody) {
+            console.error("Search input, results count, or table body element not found!");
+            return; // Exit if essential elements are missing
+        }
+
+        const productRows = productTableBody.querySelectorAll('.product-row');
+        const initialCount = productRows.length;
+
+        // Function to update table based on search
+        function filterTable() {
+            const filter = searchInput.value.toLowerCase().trim();
+            let visibleCount = 0;
+
+            productRows.forEach(row => {
+                // Target correct columns for Name (3rd child) and Description (4th child)
+                const nameCell = row.querySelector('td:nth-child(3)');
+                const descriptionCell = row.querySelector('td:nth-child(4)'); // Description is 4th
+
+                // Check if cells exist before accessing textContent
+                const nameText = nameCell ? nameCell.textContent.toLowerCase() : '';
+                // Use the <small> tag inside the 4th cell for description filtering
+                const descriptionElement = descriptionCell ? descriptionCell.querySelector('small.text-muted') : null;
+                const descriptionText = descriptionElement ? descriptionElement.textContent.toLowerCase() : '';
+
+                // Check both name and description
+                if (nameText.includes(filter) || descriptionText.includes(filter)) {
+                    row.style.display = ''; // Show row
+                    visibleCount++;
+                } else {
+                    row.style.display = 'none'; // Hide row
+                }
+            });
+
+            resultsCountElement.textContent = visibleCount;
+
+            // Show/Hide the "No products" row if it exists
+            const noProductsRow = productTableBody.querySelector('tr:not(.product-row)'); // Assumes only one non-product row
+            if (noProductsRow) {
+                noProductsRow.style.display = (visibleCount === 0 && initialCount > 0) ? '' : 'none';
+            }
+        }
+
+        // Initial count display
+        resultsCountElement.textContent = initialCount;
+
+        // Add event listener to the search input
+        searchInput.addEventListener('input', filterTable);
+
+        // Also update count display on initial load in case of pre-filled search or other scenarios
+        // This re-calculation might be redundant if filterTable isn't called initially,
+        // but ensures consistency if the table could be initially filtered by other means.
+        // filterTable(); // Uncomment this if you need initial filtering based on a pre-filled value
+
+         // Hide the 'no products' row initially if there are products
+         const noProductsRow = productTableBody.querySelector('tr:not(.product-row)');
+         if (noProductsRow && initialCount > 0) {
+             noProductsRow.style.display = 'none';
+         }
+
+
+    });
+    // ## END: Search Bar JavaScript ##
 </script>
+
 </body>
 </html>
