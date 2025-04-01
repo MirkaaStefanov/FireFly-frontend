@@ -1,6 +1,5 @@
 package com.example.FireFly_frontend.exception;
 
-import com.example.FireFly_frontend.slack.SlackService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    private final SlackService slackService;
 
     @ExceptionHandler(Exception.class)
     public String alertSlackChannelWhenUnexpectedErrorOccurs(Exception ex, HttpServletRequest request) {
@@ -22,9 +20,6 @@ public class GlobalExceptionHandler {
 
             return "redirect:/login?message=loginRequired";
         }
-
-        slackService.publishMessage("lukeria-notifications",
-                "Error occurred from the FRONTEND application -> " + ex.getMessage());
 
         request.setAttribute("javax.servlet.error.status_code", HttpStatus.INTERNAL_SERVER_ERROR.value());
         request.setAttribute("javax.servlet.error.message", ex.getMessage());
