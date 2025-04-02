@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Iterator;
 import java.util.List;
 
 @Controller
@@ -28,6 +29,18 @@ public class FinalProductNeedController {
     @GetMapping("/create/{id}")
     public String form(@PathVariable Long id, Model model) {
         List<MidProductDTO> midProducts = midProductClient.findAll();
+        List<FinalProductNeedDTO> allProducts = finalProductNeedClient.findAllForFinalProduct(id);
+
+        Iterator<MidProductDTO> iterator = midProducts.iterator();
+        while (iterator.hasNext()) {
+            MidProductDTO midProductDTO = iterator.next();
+            for (FinalProductNeedDTO finalProductNeed : allProducts) {
+                if (finalProductNeed.getMidProduct().equals(midProductDTO)) {
+                    iterator.remove();
+                    break;
+                }
+            }
+        }
         model.addAttribute("finalProductId", id);
         model.addAttribute("midProducts", midProducts);
         return "FinalProductNeed/form";
