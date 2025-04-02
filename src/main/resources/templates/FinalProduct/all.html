@@ -36,10 +36,11 @@
                 </div>
             </div>
             <div class="flex-shrink-0">
-                <a th:href="@{/finalProduct/create}" class="btn btn-add-product">
-                    <i class="fas fa-plus me-1"></i> Добави уред </a>
+                <a th:href="@{/midProduct/create}" class="btn btn-add-product">
+                    <i class="fas fa-plus me-1"></i> Alet ekle </a>
             </div>
         </div>
+
         <div class="table-responsive">
             <table class="table table-hover align-middle enhanced-table">
                 <thead>
@@ -56,88 +57,45 @@
                 <tbody>
                 <tr th:each="product : ${products}" class="product-row">
                     <td>
-                        <img th:src="${product.image != null ? 'data:image/jpeg;base64,' + product.image : '/img/photos/noImage.png'}"
-                             alt="Product Image" class="product-table-image">
+                        <img th:src="'data:image/jpeg;base64,' + ${product.image}" alt="Product Image" class="product-table-image">
                     </td>
                     <td th:text="${product.id}"></td>
                     <td th:text="${product.name}"></td>
                     <td>
-                        <small class="text-muted" th:text="${product.description ?: 'N/A'}"></small>
+                        <small class="text-muted" th:text="${product.description}"></small>
                     </td>
-                    <td class="text-end price-cell"
-                        th:text="${#numbers.formatDecimal(product.price, 1, 'COMMA', 2, 'POINT') + ' tl.'}"></td>
+                    <td class="text-end price-cell" th:text="${#numbers.formatDecimal(product.price, 1, 'COMMA', 2, 'POINT') + ' tl.'}"></td>
                     <td class="text-center">
-                        <span th:if="${product.quantity == null or product.quantity <= 0}"
-                              class="badge bg-secondary quantity-badge">0 бр.</span>
-                        <span th:if="${product.quantity > 0 and product.quantity <= 50}"
-                              class="badge bg-danger quantity-badge" th:text="${product.quantity + ' бр.'}"></span>
-                        <span th:if="${product.quantity > 50 and product.quantity <= 200}"
-                              class="badge bg-warning text-dark quantity-badge"
-                              th:text="${product.quantity + ' бр.'}"></span>
-                        <span th:if="${product.quantity > 200}" class="badge bg-success quantity-badge"
-                              th:text="${product.quantity + ' бр.'}"></span>
+                        <span th:if="${product.quantity <= 50}" class="badge bg-danger quantity-badge" th:text="${product.quantity + ' бр.'}"></span>
+                        <span th:if="${product.quantity > 50 and product.quantity <= 200}" class="badge bg-warning text-dark quantity-badge" th:text="${product.quantity + ' бр.'}"></span>
+                        <span th:if="${product.quantity > 200}" class="badge bg-success quantity-badge" th:text="${product.quantity + ' бр.'}"></span>
                     </td>
                     <td class="text-center">
-                        <a th:href="@{/finalProductNeed/all/{id}(id=${product.id})}"
-                           class="btn btn-warning btn-sm action-button">Needed</a>
+                        <a th:href="@{/finalProductNeed/all/{id}(id=${product.id})}" class="btn btn-warning btn-sm action-button">Needed</a>
                     </td>
                 </tr>
-                <tr th:if="${products == null or #lists.isEmpty(products)}">
+                <tr th:if="${#lists.isEmpty(products)}">
                     <td colspan="7" class="text-center text-muted p-5">Няма налични продукти.</td>
                 </tr>
                 </tbody>
             </table>
-        </div>
-    </div>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        </div></div> </div> <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     // Sidebar Toggle Function
     function toggleSidebar() {
-        const sidebar = document.querySelector('.sidebar');
-        const mainContent = document.querySelector('.main-content');
-        if (sidebar && mainContent) {
-            sidebar.classList.toggle('collapsed');
-            // The main content margin adjustment is handled by CSS (.sidebar.collapsed + .main-content)
-            // If CSS doesn't use the sibling selector, you might need JS:
-            // mainContent.classList.toggle('sidebar-collapsed');
-        } else {
-            console.error("Sidebar or Main Content element not found for toggle.");
-        }
+        document.querySelector('.sidebar').classList.toggle('collapsed');
+        document.querySelector('.main-content').classList.toggle('sidebar-collapsed');
     }
-
-    // Add event listener for the toggle button if it exists
-    // (Assuming the toggle button is part of the fragments/header :: header)
-    document.addEventListener('DOMContentLoaded', function() {
-        const toggleButton = document.querySelector('.toggle-btn'); // Make sure this selector matches your button
-        if (toggleButton) {
-            toggleButton.addEventListener('click', toggleSidebar);
-        }
-
-        // Optional: Collapse sidebar by default on smaller screens using JS check
-        // if (window.innerWidth < 768) {
-        //     const sidebar = document.querySelector('.sidebar');
-        //     if (sidebar && !sidebar.classList.contains('collapsed')) {
-        //         toggleSidebar(); // Collapse if not already collapsed by CSS
-        //     }
-        // }
-    });
-
+    // Optional: Collapse sidebar by default on smaller screens
+    // if (window.innerWidth < 768) { ... }
 
     // ## START: Search Bar JavaScript ##
     document.addEventListener('DOMContentLoaded', function () {
         const searchInput = document.getElementById('searchInput');
-        const resultsCountElement = document.getElementById('resultsCount');
+        const resultsCount = document.getElementById('resultsCount');
         // Ensure selector targets rows within the correct table body
-        const productTableBody = document.querySelector('.enhanced-table tbody');
-
-        if (!searchInput || !resultsCountElement || !productTableBody) {
-            console.error("Search input, results count, or table body element not found!");
-            return; // Exit if essential elements are missing
-        }
-
-        const productRows = productTableBody.querySelectorAll('.product-row');
-        const initialCount = productRows.length;
+        const productRows = document.querySelectorAll('.enhanced-table tbody .product-row');
+        const initialCount = productRows.length; // Get initial count
 
         // Function to update table based on search
         function filterTable() {
@@ -147,16 +105,13 @@
             productRows.forEach(row => {
                 // Target correct columns for Name (3rd child) and Description (4th child)
                 const nameCell = row.querySelector('td:nth-child(3)');
-                const descriptionCell = row.querySelector('td:nth-child(4)'); // Description is 4th
+                const descriptionCell = row.querySelector('td:nth-child(4)');
 
                 // Check if cells exist before accessing textContent
-                const nameText = nameCell ? nameCell.textContent.toLowerCase() : '';
-                // Use the <small> tag inside the 4th cell for description filtering
-                const descriptionElement = descriptionCell ? descriptionCell.querySelector('small.text-muted') : null;
-                const descriptionText = descriptionElement ? descriptionElement.textContent.toLowerCase() : '';
+                const name = nameCell ? nameCell.textContent.toLowerCase() : '';
+                const description = descriptionCell ? descriptionCell.textContent.toLowerCase() : '';
 
-                // Check both name and description
-                if (nameText.includes(filter) || descriptionText.includes(filter)) {
+                if (name.includes(filter) || description.includes(filter)) {
                     row.style.display = ''; // Show row
                     visibleCount++;
                 } else {
@@ -164,31 +119,24 @@
                 }
             });
 
-            resultsCountElement.textContent = visibleCount;
-
-            // Show/Hide the "No products" row if it exists
-            const noProductsRow = productTableBody.querySelector('tr:not(.product-row)'); // Assumes only one non-product row
-            if (noProductsRow) {
-                noProductsRow.style.display = (visibleCount === 0 && initialCount > 0) ? '' : 'none';
-            }
+            resultsCount.textContent = visibleCount;
         }
 
         // Initial count display
-        resultsCountElement.textContent = initialCount;
+         resultsCount.textContent = initialCount;
+
 
         // Add event listener to the search input
-        searchInput.addEventListener('input', filterTable);
+        if (searchInput) {
+            searchInput.addEventListener('input', filterTable);
+        } else {
+            console.error("Search input element not found!");
+        }
 
-        // Also update count display on initial load in case of pre-filled search or other scenarios
-        // This re-calculation might be redundant if filterTable isn't called initially,
-        // but ensures consistency if the table could be initially filtered by other means.
-        // filterTable(); // Uncomment this if you need initial filtering based on a pre-filled value
-
-         // Hide the 'no products' row initially if there are products
-         const noProductsRow = productTableBody.querySelector('tr:not(.product-row)');
-         if (noProductsRow && initialCount > 0) {
-             noProductsRow.style.display = 'none';
-         }
+         // Also update count display on initial load
+         resultsCount.textContent = document.querySelectorAll('.enhanced-table tbody .product-row[style*="display: none;"]').length > 0
+            ? document.querySelectorAll('.enhanced-table tbody .product-row:not([style*="display: none;"])').length
+            : initialCount;
 
 
     });
