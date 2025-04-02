@@ -4,6 +4,7 @@ import com.example.FireFly_frontend.clients.FirstProductClient;
 import com.example.FireFly_frontend.clients.MidProductClient;
 import com.example.FireFly_frontend.dtos.FirstProductDTO;
 import com.example.FireFly_frontend.dtos.MidProductDTO;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -31,17 +32,19 @@ public class MidProductController {
     }
 
     @PostMapping("/submit")
-    public String submit(@ModelAttribute MidProductDTO product) throws IOException {
+    public String submit(@ModelAttribute MidProductDTO product, HttpServletRequest request) throws IOException {
+        String token = (String) request.getSession().getAttribute("sessionToken");
         byte[] fileBytes = product.getMultipartFile().getBytes();
         String encodedImage = Base64.getEncoder().encodeToString(fileBytes);
         product.setImage(encodedImage);
-        midProductClient.save(product);
+        midProductClient.save(product,token);
         return "redirect:/midProduct/all";
     }
 
     @GetMapping("/all")
-    public String all(Model model) {
-        List<MidProductDTO> products = midProductClient.findAll();
+    public String all(Model model,HttpServletRequest request) {
+        String token = (String) request.getSession().getAttribute("sessionToken");
+        List<MidProductDTO> products = midProductClient.findAll(token);
         model.addAttribute("products", products);
         return "MidProduct/all";
     }

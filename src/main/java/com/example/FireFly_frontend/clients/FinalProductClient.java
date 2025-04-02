@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -15,12 +16,12 @@ import java.util.List;
 public interface FinalProductClient {
 
     @PostMapping("/save")
-    FinalProductDTO save(@RequestBody FinalProductDTO productDTO);
+    FinalProductDTO save(@RequestBody FinalProductDTO productDTO,@RequestHeader("Authorization") String auth);
 
     @GetMapping("/all")
-    List<FinalProductDTO> findAll();
+    List<FinalProductDTO> findAll(@RequestHeader("Authorization") String auth);
 
     @GetMapping("/findById/{id}")
-    FinalProductDTO findById(@RequestParam Long id);
+    FinalProductDTO findById(@RequestParam Long id,@RequestHeader("Authorization") String auth);
 
 }

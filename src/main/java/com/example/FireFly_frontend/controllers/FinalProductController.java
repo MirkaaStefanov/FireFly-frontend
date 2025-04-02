@@ -4,6 +4,7 @@ import com.example.FireFly_frontend.clients.FinalProductClient;
 import com.example.FireFly_frontend.clients.MidProductClient;
 import com.example.FireFly_frontend.dtos.FinalProductDTO;
 import com.example.FireFly_frontend.dtos.MidProductDTO;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -31,17 +32,19 @@ public class FinalProductController {
     }
 
     @PostMapping("/submit")
-    public String submit(@ModelAttribute FinalProductDTO product) throws IOException {
+    public String submit(@ModelAttribute FinalProductDTO product,HttpServletRequest request) throws IOException {
+        String token = (String) request.getSession().getAttribute("sessionToken");
         byte[] fileBytes = product.getMultipartFile().getBytes();
         String encodedImage = Base64.getEncoder().encodeToString(fileBytes);
         product.setImage(encodedImage);
-        finalProductClient.save(product);
+        finalProductClient.save(product,token);
         return "redirect:/finalProduct/all";
     }
 
     @GetMapping("/all")
-    public String all(Model model) {
-        List<FinalProductDTO> products = finalProductClient.findAll();
+    public String all(Model model, HttpServletRequest request) {
+        String token = (String) request.getSession().getAttribute("sessionToken");
+        List<FinalProductDTO> products = finalProductClient.findAll(token);
         model.addAttribute("products", products);
         return "FinalProduct/all";
     }

@@ -2,6 +2,7 @@ package com.example.FireFly_frontend.controllers;
 
 import com.example.FireFly_frontend.clients.FirstProductClient;
 import com.example.FireFly_frontend.dtos.FirstProductDTO;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -30,17 +31,19 @@ public class FirstProductController {
     }
 
     @PostMapping("/submit")
-    public String submit(@ModelAttribute FirstProductDTO product) throws IOException {
+    public String submit(@ModelAttribute FirstProductDTO product, HttpServletRequest request) throws IOException {
+        String token = (String) request.getSession().getAttribute("sessionToken");
         byte[] fileBytes = product.getMultipartFile().getBytes();
         String encodedImage = Base64.getEncoder().encodeToString(fileBytes);
         product.setImage(encodedImage);
-        firstProductClient.save(product);
+        firstProductClient.save(product,token);
         return "redirect:/firstProduct/all";
     }
 
     @GetMapping("/all")
-    public String all(Model model) {
-        List<FirstProductDTO> products = firstProductClient.findAll();
+    public String all(Model model,HttpServletRequest request) {
+        String token = (String) request.getSession().getAttribute("sessionToken");
+        List<FirstProductDTO> products = firstProductClient.findAll(token);
         model.addAttribute("products", products);
         return "FirstProduct/all";
     }

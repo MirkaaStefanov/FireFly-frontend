@@ -6,6 +6,7 @@ import com.example.FireFly_frontend.clients.MidProductClient;
 import com.example.FireFly_frontend.dtos.FinalProductDTO;
 import com.example.FireFly_frontend.dtos.FinalProductNeedDTO;
 import com.example.FireFly_frontend.dtos.MidProductDTO;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -30,9 +31,10 @@ public class FinalProductNeedController {
     private final MidProductClient midProductClient;
 
     @GetMapping("/create/{id}")
-    public String form(@PathVariable Long id, Model model) {
-        List<MidProductDTO> midProducts = midProductClient.findAll();
-        List<FinalProductNeedDTO> allProducts = finalProductNeedClient.findAllForFinalProduct(id);
+    public String form(@PathVariable Long id, Model model,HttpServletRequest request) {
+        String token = (String) request.getSession().getAttribute("sessionToken");
+        List<MidProductDTO> midProducts = midProductClient.findAll(token);
+        List<FinalProductNeedDTO> allProducts = finalProductNeedClient.findAllForFinalProduct(id,token);
 
         Iterator<MidProductDTO> iterator = midProducts.iterator();
         while (iterator.hasNext()) {
@@ -50,14 +52,16 @@ public class FinalProductNeedController {
     }
 
     @PostMapping("/submit")
-    public String save(@RequestParam Long finalProductId, @RequestParam Long midProductId, @RequestParam int quantity) {
-        finalProductNeedClient.save(finalProductId, midProductId, quantity);
+    public String save(@RequestParam Long finalProductId, @RequestParam Long midProductId, @RequestParam int quantity, HttpServletRequest request) {
+        String token = (String) request.getSession().getAttribute("sessionToken");
+        finalProductNeedClient.save(finalProductId, midProductId, quantity,token);
         return "redirect:/finalProductNeed/all/" + finalProductId;
     }
     @GetMapping("/all/{id}")
-    public String findAllForFinalProduct(@PathVariable Long id, Model model){
-        List<FinalProductNeedDTO> allProducts = finalProductNeedClient.findAllForFinalProduct(id);
-        FinalProductDTO finalProductDTO = finalProductClient.findById(id);
+    public String findAllForFinalProduct(@PathVariable Long id, Model model, HttpServletRequest request){
+        String token = (String) request.getSession().getAttribute("sessionToken");
+        List<FinalProductNeedDTO> allProducts = finalProductNeedClient.findAllForFinalProduct(id,token);
+        FinalProductDTO finalProductDTO = finalProductClient.findById(id,token);
         model.addAttribute("finalProductId", id);
         model.addAttribute("products", allProducts);
         model.addAttribute("finalProduct", finalProductDTO);
