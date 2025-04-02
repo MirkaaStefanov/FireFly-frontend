@@ -1,7 +1,9 @@
 package com.example.FireFly_frontend.controllers;
 
+import com.example.FireFly_frontend.clients.FinalProductClient;
 import com.example.FireFly_frontend.clients.FinalProductNeedClient;
 import com.example.FireFly_frontend.clients.MidProductClient;
+import com.example.FireFly_frontend.dtos.FinalProductDTO;
 import com.example.FireFly_frontend.dtos.FinalProductNeedDTO;
 import com.example.FireFly_frontend.dtos.MidProductDTO;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,7 @@ import java.util.List;
 public class FinalProductNeedController {
 
     private final FinalProductNeedClient finalProductNeedClient;
+    private final FinalProductClient finalProductClient;
     private final MidProductClient midProductClient;
 
     @GetMapping("/create/{id}")
@@ -54,8 +57,10 @@ public class FinalProductNeedController {
     @GetMapping("/all/{id}")
     public String findAllForFinalProduct(@PathVariable Long id, Model model){
         List<FinalProductNeedDTO> allProducts = finalProductNeedClient.findAllForFinalProduct(id);
+        FinalProductDTO finalProductDTO = finalProductClient.findById(id);
         model.addAttribute("finalProductId", id);
         model.addAttribute("products", allProducts);
+        model.addAttribute("finalProduct", finalProductDTO);
         return "FinalProductNeed/allForProduct";
     }
 
