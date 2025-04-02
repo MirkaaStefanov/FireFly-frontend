@@ -107,6 +107,15 @@ body {
 .btn-submit-custom:hover { background-color: #bacc4f; border-color: #bacc4f; color: #333; }
 .form-control[type="file"] { color: #495057; }
 
+.exchange-rate-badge {
+    background-color: #cde952; /* Same as .btn-add-product */
+    color: #333;
+    font-weight: 600;
+    padding: 10px 15px;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    display: inline-block;
+}
 
 /* === Responsive Adjustments === */
 @media (max-width: 768px) {

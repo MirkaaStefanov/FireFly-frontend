@@ -1,5 +1,6 @@
 package com.example.FireFly_frontend.controllers;
 
+import com.example.FireFly_frontend.clients.ExchangeClient;
 import com.example.FireFly_frontend.clients.FinalProductClient;
 import com.example.FireFly_frontend.clients.MidProductClient;
 import com.example.FireFly_frontend.dtos.FinalProductDTO;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Base64;
 import java.util.List;
 
@@ -24,6 +26,7 @@ import java.util.List;
 @RequestMapping("/finalProduct")
 public class FinalProductController {
     private final FinalProductClient finalProductClient;
+    private final ExchangeClient exchangeClient;
 
     @GetMapping("/create")
     public String create(Model model) {
@@ -44,8 +47,13 @@ public class FinalProductController {
     @GetMapping("/all")
     public String all(Model model, HttpServletRequest request) {
         String token = (String) request.getSession().getAttribute("sessionToken");
+        Double tryExchangeRate = exchangeClient.exchangeEuroToTRY();
         List<FinalProductDTO> products = finalProductClient.findAll(token);
+        for (FinalProductDTO finalProductDTO : products){
+            finalProductDTO.setTryPrice(finalProductDTO.getPrice()*tryExchangeRate);
+        }
         model.addAttribute("products", products);
+        model.addAttribute("exchangeRate", tryExchangeRate);
         return "FinalProduct/all";
     }
 }

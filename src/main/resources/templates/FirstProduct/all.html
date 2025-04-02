@@ -22,6 +22,14 @@
 
   <div class="table-container enhanced-container">
 
+    <th:block th:if="${session.sessionRole == 'ADMIN'}">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="mb-0">
+          <span class="exchange-rate-badge" th:text="'1 EUR = ' + ${exchangeRate} + ' TL'"></span>
+        </h4>
+      </div>
+    </th:block>
+
     <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
 
       <div class="flex-grow-1" style="min-width: 250px; max-width: 600px;">
@@ -49,7 +57,8 @@
           <th scope="col">ID</th>
           <th scope="col">Име</th>
           <th scope="col">Описание</th>
-          <th scope="col" class="text-end">Цена</th>
+          <th scope="col" class="text-end">Цена(EUR)</th>
+          <th scope="col" class="text-end">Цена(TL)</th>
           <th scope="col" class="text-center">Наличност</th>
           <th scope="col" class="text-center">Type</th>
           <th scope="col" class="text-center">Действия</th>
@@ -65,7 +74,13 @@
           <td>
             <small class="text-muted" th:text="${product.description}"></small>
           </td>
-          <td class="text-end price-cell" th:text="${#numbers.formatDecimal(product.price, 1, 'COMMA', 2, 'POINT') + ' tl.'}"></td>
+          <th:block th:if="${session.sessionRole == 'ADMIN'}">
+            <td class="text-end price-cell"
+                th:text="${#numbers.formatDecimal(product.price, 1, 'COMMA', 2, 'POINT') + ' EUR'}"></td>
+            <td class="text-end price-cell"
+                th:text="${#numbers.formatDecimal(product.tryPrice, 1, 'COMMA', 2, 'POINT') + ' TL'}">
+            </td>
+          </th:block>
           <td class="text-center">
             <span th:if="${product.quantity <= 50}" class="badge bg-danger quantity-badge" th:text="${product.quantity + ' бр.'}"></span>
             <span th:if="${product.quantity > 50 and product.quantity <= 200}" class="badge bg-warning text-dark quantity-badge" th:text="${product.quantity + ' бр.'}"></span>

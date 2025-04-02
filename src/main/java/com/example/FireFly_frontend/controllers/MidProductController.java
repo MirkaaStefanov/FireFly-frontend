@@ -1,5 +1,6 @@
 package com.example.FireFly_frontend.controllers;
 
+import com.example.FireFly_frontend.clients.ExchangeClient;
 import com.example.FireFly_frontend.clients.FirstProductClient;
 import com.example.FireFly_frontend.clients.MidProductClient;
 import com.example.FireFly_frontend.dtos.FirstProductDTO;
@@ -24,6 +25,7 @@ import java.util.List;
 @RequestMapping("/midProduct")
 public class MidProductController {
     private final MidProductClient midProductClient;
+    private final ExchangeClient exchangeClient;
 
     @GetMapping("/create")
     public String create(Model model) {
@@ -44,7 +46,12 @@ public class MidProductController {
     @GetMapping("/all")
     public String all(Model model,HttpServletRequest request) {
         String token = (String) request.getSession().getAttribute("sessionToken");
+        Double tryExchangeRate = exchangeClient.exchangeEuroToTRY();
         List<MidProductDTO> products = midProductClient.findAll(token);
+        for(MidProductDTO midProductDTO : products){
+            midProductDTO.setTryPrice(midProductDTO.getPrice()*tryExchangeRate);
+        }
+        model.addAttribute("exchangeRate", tryExchangeRate);
         model.addAttribute("products", products);
         return "MidProduct/all";
     }

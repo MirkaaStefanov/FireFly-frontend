@@ -1,5 +1,6 @@
 package com.example.FireFly_frontend.controllers;
 
+import com.example.FireFly_frontend.clients.ExchangeClient;
 import com.example.FireFly_frontend.clients.FirstProductClient;
 import com.example.FireFly_frontend.dtos.FirstProductDTO;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,6 +24,7 @@ import java.util.List;
 public class FirstProductController {
 
     private final FirstProductClient firstProductClient;
+    private final ExchangeClient exchangeClient;
 
     @GetMapping("/create")
     public String create(Model model) {
@@ -36,14 +38,19 @@ public class FirstProductController {
         byte[] fileBytes = product.getMultipartFile().getBytes();
         String encodedImage = Base64.getEncoder().encodeToString(fileBytes);
         product.setImage(encodedImage);
-        firstProductClient.save(product,token);
+        firstProductClient.save(product, token);
         return "redirect:/firstProduct/all";
     }
 
     @GetMapping("/all")
-    public String all(Model model,HttpServletRequest request) {
+    public String all(Model model, HttpServletRequest request) {
         String token = (String) request.getSession().getAttribute("sessionToken");
+        Double tryExchangeRate = exchangeClient.exchangeEuroToTRY();
         List<FirstProductDTO> products = firstProductClient.findAll(token);
+        for (FirstProductDTO firstProductDTO : products){
+            firstProductDTO.setTryPrice(firstProductDTO.getPrice()*tryExchangeRate);
+        }
+        model.addAttribute("exchangeRate", tryExchangeRate);
         model.addAttribute("products", products);
         return "FirstProduct/all";
     }
