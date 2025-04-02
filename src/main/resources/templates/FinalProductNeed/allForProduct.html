@@ -20,11 +20,19 @@
 
   <div class="table-container enhanced-container">
 
-    <div class="product-info mb-3">
-      <h3 th:text="${finalProduct.name}" class="text-primary"></h3>
-      <p th:text="${finalProduct.description}" class="text-muted"></p>
+    <div class="product-info mb-3 d-flex justify-content-between align-items-center">
+      <div>
+        <h3 th:text="${finalProduct.name}" class="text-primary"></h3>
+        <p th:text="${finalProduct.description}" class="text-muted"></p>
+      </div>
+      <div>
+        <span class="exchange-rate-badge px-3 py-2 rounded">
+            <strong>Final Cost: </strong>
+             <span th:text="${#numbers.formatDecimal(finalCost, 1, 'COMMA', 2, 'POINT') + ' EUR'}"></span> /
+            <span th:text="${#numbers.formatDecimal(tryFinalCost, 1, 'COMMA', 2, 'POINT') + ' TL'}"></span>
+        </span>
+      </div>
     </div>
-
     <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
 
       <div class="flex-grow-1" style="min-width: 250px; max-width: 600px;">

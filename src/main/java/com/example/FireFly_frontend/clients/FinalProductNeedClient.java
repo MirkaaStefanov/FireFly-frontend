@@ -15,8 +15,12 @@ import java.util.List;
 public interface FinalProductNeedClient {
 
     @PostMapping("/save")
-    FinalProductNeedDTO save(@RequestParam Long finalProductId, @RequestParam Long midProductId, @RequestParam int quantity,@RequestHeader("Authorization") String auth);
+    FinalProductNeedDTO save(@RequestParam Long finalProductId, @RequestParam Long midProductId, @RequestParam int quantity, @RequestHeader("Authorization") String auth);
 
     @GetMapping("/all/{id}")
-    List<FinalProductNeedDTO> findAllForFinalProduct(@PathVariable Long id,@RequestHeader("Authorization") String auth);
+    List<FinalProductNeedDTO> findAllForFinalProduct(@PathVariable Long id, @RequestHeader("Authorization") String auth);
+
+    @GetMapping("/cost/{id}")
+    Double calculateCost(@PathVariable Long id, @RequestHeader("Authorization") String auth);
+
 }

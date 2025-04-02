@@ -1,5 +1,6 @@
 package com.example.FireFly_frontend.controllers;
 
+import com.example.FireFly_frontend.clients.ExchangeClient;
 import com.example.FireFly_frontend.clients.FinalProductClient;
 import com.example.FireFly_frontend.clients.FinalProductNeedClient;
 import com.example.FireFly_frontend.clients.MidProductClient;
@@ -29,12 +30,13 @@ public class FinalProductNeedController {
     private final FinalProductNeedClient finalProductNeedClient;
     private final FinalProductClient finalProductClient;
     private final MidProductClient midProductClient;
+    private final ExchangeClient exchangeClient;
 
     @GetMapping("/create/{id}")
-    public String form(@PathVariable Long id, Model model,HttpServletRequest request) {
+    public String form(@PathVariable Long id, Model model, HttpServletRequest request) {
         String token = (String) request.getSession().getAttribute("sessionToken");
         List<MidProductDTO> midProducts = midProductClient.findAll(token);
-        List<FinalProductNeedDTO> allProducts = finalProductNeedClient.findAllForFinalProduct(id,token);
+        List<FinalProductNeedDTO> allProducts = finalProductNeedClient.findAllForFinalProduct(id, token);
 
         Iterator<MidProductDTO> iterator = midProducts.iterator();
         while (iterator.hasNext()) {
@@ -54,17 +56,23 @@ public class FinalProductNeedController {
     @PostMapping("/submit")
     public String save(@RequestParam Long finalProductId, @RequestParam Long midProductId, @RequestParam int quantity, HttpServletRequest request) {
         String token = (String) request.getSession().getAttribute("sessionToken");
-        finalProductNeedClient.save(finalProductId, midProductId, quantity,token);
+        finalProductNeedClient.save(finalProductId, midProductId, quantity, token);
         return "redirect:/finalProductNeed/all/" + finalProductId;
     }
+
     @GetMapping("/all/{id}")
-    public String findAllForFinalProduct(@PathVariable Long id, Model model, HttpServletRequest request){
+    public String findAllForFinalProduct(@PathVariable Long id, Model model, HttpServletRequest request) {
         String token = (String) request.getSession().getAttribute("sessionToken");
-        List<FinalProductNeedDTO> allProducts = finalProductNeedClient.findAllForFinalProduct(id,token);
-        FinalProductDTO finalProductDTO = finalProductClient.findById(id,token);
+        Double tryExchangeRate = exchangeClient.exchangeEuroToTRY();
+        List<FinalProductNeedDTO> allProducts = finalProductNeedClient.findAllForFinalProduct(id, token);
+        Double finalCost = finalProductNeedClient.calculateCost(id, token);
+        Double tryFinalCost = finalCost*tryExchangeRate;
+        FinalProductDTO finalProductDTO = finalProductClient.findById(id, token);
         model.addAttribute("finalProductId", id);
         model.addAttribute("products", allProducts);
         model.addAttribute("finalProduct", finalProductDTO);
+        model.addAttribute("finalCost", finalCost);
+        model.addAttribute("tryFinalCost", tryFinalCost);
         return "FinalProductNeed/allForProduct";
     }
 
