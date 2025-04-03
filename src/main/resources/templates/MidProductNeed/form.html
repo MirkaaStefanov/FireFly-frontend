@@ -93,7 +93,7 @@
           <option value="">Изберете компонент</option>
           <option th:each="firstProduct : ${firstProducts}"
                   th:value="${firstProduct.id}"
-                  th:text="${firstProduct.name}">
+                  th:text="${firstProduct.name+'-'+firstProduct.description}">
           </option>
         </select>
       </div>

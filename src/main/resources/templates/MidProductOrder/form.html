@@ -80,18 +80,18 @@
 
 <div class="main-content">
   <div class="page-header">
-    <h1 class="page-title">Добавяне на Изискване за Продукт</h1>
+    <h1 class="page-title">Birlesik Alet siparisi ver</h1>
   </div>
 
   <div class="form-container enhanced-container">
-    <form th:action="@{/finalProductNeed/submit}" method="post">
-      <input type="hidden" name="finalProductId" th:value="${finalProductId}">
+    <form th:action="@{/midProductOrder/create}" method="post">
+
 
       <div class="form-group">
-        <label for="midProductId" class="form-label">Компонент:</label>
-        <select id="midProductId" name="midProductId" class="form-control select2" required>
+        <label for="firstProductId" class="form-label">Компонент:</label>
+        <select id="firstProductId" name="id" class="form-control select2" required>
           <option value="">Изберете компонент</option>
-          <option th:each="midProduct : ${midProducts}"
+          <option th:each="midProduct : ${finalProducts}"
                   th:value="${midProduct.id}"
                   th:text="${midProduct.name+'-'+midProduct.description}">
           </option>
