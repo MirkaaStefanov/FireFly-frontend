@@ -17,7 +17,6 @@ public class MidProductDTO {
     private String name;
     private String description;
     private double price;
-    @JsonIgnore
     private double tryPrice;
     private int quantity;
     @JsonIgnore

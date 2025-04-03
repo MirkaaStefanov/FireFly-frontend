@@ -20,7 +20,6 @@ public class FirstProductDTO {
     private String name;
     private String description;
     private double price;
-    @JsonIgnore
     private double tryPrice;
     private int quantity;
     private MaterialType materialType;

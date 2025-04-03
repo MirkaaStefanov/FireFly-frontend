@@ -47,9 +47,6 @@ public class FirstProductController {
         String token = (String) request.getSession().getAttribute("sessionToken");
         Double tryExchangeRate = exchangeClient.exchangeEuroToTRY();
         List<FirstProductDTO> products = firstProductClient.findAll(token);
-        for (FirstProductDTO firstProductDTO : products){
-            firstProductDTO.setTryPrice(firstProductDTO.getPrice()*tryExchangeRate);
-        }
         model.addAttribute("exchangeRate", tryExchangeRate);
         model.addAttribute("products", products);
         return "FirstProduct/all";

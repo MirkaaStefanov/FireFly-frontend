@@ -18,11 +18,9 @@ public class FinalProductDTO {
     private String name;
     private String description;
     private double price;
-    @JsonIgnore
     private double tryPrice;
     private int quantity;
     private double finalCost;
-    @JsonIgnore
     private double tryFinalCost;
     @JsonIgnore
     private MultipartFile multipartFile;

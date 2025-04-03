@@ -49,9 +49,6 @@ public class FinalProductController {
         String token = (String) request.getSession().getAttribute("sessionToken");
         Double tryExchangeRate = exchangeClient.exchangeEuroToTRY();
         List<FinalProductDTO> products = finalProductClient.findAll(token);
-        for (FinalProductDTO finalProductDTO : products){
-            finalProductDTO.setTryPrice(finalProductDTO.getPrice()*tryExchangeRate);
-        }
         model.addAttribute("products", products);
         model.addAttribute("exchangeRate", tryExchangeRate);
         return "FinalProduct/all";
