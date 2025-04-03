@@ -28,8 +28,8 @@
       <div>
         <span class="exchange-rate-badge px-3 py-2 rounded">
             <strong>Final Cost: </strong>
-             <span th:text="${#numbers.formatDecimal(finalCost, 1, 'COMMA', 2, 'POINT') + ' EUR'}"></span> /
-            <span th:text="${#numbers.formatDecimal(tryFinalCost, 1, 'COMMA', 2, 'POINT') + ' TL'}"></span>
+             <span th:text="${#numbers.formatDecimal(finalProduct.finalCost, 1, 'COMMA', 2, 'POINT') + ' EUR'}"></span> /
+            <span th:text="${#numbers.formatDecimal(finalProduct.tryFinalCost, 1, 'COMMA', 2, 'POINT') + ' TL'}"></span>
         </span>
       </div>
     </div>

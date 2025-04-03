@@ -65,14 +65,11 @@ public class FinalProductNeedController {
         String token = (String) request.getSession().getAttribute("sessionToken");
         Double tryExchangeRate = exchangeClient.exchangeEuroToTRY();
         List<FinalProductNeedDTO> allProducts = finalProductNeedClient.findAllForFinalProduct(id, token);
-        Double finalCost = finalProductNeedClient.calculateCost(id, token);
-        Double tryFinalCost = finalCost*tryExchangeRate;
         FinalProductDTO finalProductDTO = finalProductClient.findById(id, token);
+        finalProductDTO.setTryFinalCost(finalProductDTO.getFinalCost() * tryExchangeRate);
         model.addAttribute("finalProductId", id);
         model.addAttribute("products", allProducts);
         model.addAttribute("finalProduct", finalProductDTO);
-        model.addAttribute("finalCost", finalCost);
-        model.addAttribute("tryFinalCost", tryFinalCost);
         return "FinalProductNeed/allForProduct";
     }
 

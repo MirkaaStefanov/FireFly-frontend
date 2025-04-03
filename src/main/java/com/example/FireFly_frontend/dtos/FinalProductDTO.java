@@ -21,6 +21,9 @@ public class FinalProductDTO {
     @JsonIgnore
     private double tryPrice;
     private int quantity;
+    private double finalCost;
+    @JsonIgnore
+    private double tryFinalCost;
     @JsonIgnore
     private MultipartFile multipartFile;
 
