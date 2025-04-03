@@ -27,5 +27,6 @@ public class FinalProductDTO {
     private double tryFinalCost;
     @JsonIgnore
     private MultipartFile multipartFile;
+    private boolean deleted;
 
 }

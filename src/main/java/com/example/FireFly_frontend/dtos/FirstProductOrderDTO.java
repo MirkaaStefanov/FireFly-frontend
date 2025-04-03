@@ -13,4 +13,5 @@ public class FirstProductOrderDTO {
     private FirstProductDTO firstProduct;
     private int quantity;
     private boolean done;
+    private boolean deleted;
 }

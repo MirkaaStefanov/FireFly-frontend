@@ -13,5 +13,6 @@ public class FinalProductNeedDTO {
     private FinalProductDTO finalProduct;
     private MidProductDTO midProduct;
     private int quantity;
+    private boolean deleted;
 
 }
