@@ -48,6 +48,9 @@ public class MidProductController {
         String token = (String) request.getSession().getAttribute("sessionToken");
         Double tryExchangeRate = exchangeClient.exchangeEuroToTRY();
         List<MidProductDTO> products = midProductClient.findAll(token);
+        for(MidProductDTO midProduct : products){
+            midProduct.setTryPrice(midProduct.getPrice()*tryExchangeRate);
+        }
         model.addAttribute("exchangeRate", tryExchangeRate);
         model.addAttribute("products", products);
         return "MidProduct/all";

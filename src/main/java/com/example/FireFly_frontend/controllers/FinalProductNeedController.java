@@ -64,7 +64,11 @@ public class FinalProductNeedController {
     public String findAllForFinalProduct(@PathVariable Long id, Model model, HttpServletRequest request) {
         String token = (String) request.getSession().getAttribute("sessionToken");
         List<FinalProductNeedDTO> allProducts = finalProductNeedClient.findAllForFinalProduct(id, token);
+        Double tryExchangeRate = exchangeClient.exchangeEuroToTRY();
         FinalProductDTO finalProductDTO = finalProductClient.findById(id, token);
+        Double finalCost = finalProductNeedClient.calculateCost(id,token);
+        finalProductDTO.setFinalCost(finalCost);
+        finalProductDTO.setTryFinalCost(finalCost*tryExchangeRate);
         model.addAttribute("finalProductId", id);
         model.addAttribute("products", allProducts);
         model.addAttribute("finalProduct", finalProductDTO);

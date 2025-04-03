@@ -1,5 +1,6 @@
 package com.example.FireFly_frontend.controllers;
 
+import com.example.FireFly_frontend.clients.ExchangeClient;
 import com.example.FireFly_frontend.clients.FinalProductNeedClient;
 import com.example.FireFly_frontend.clients.FirstProductClient;
 import com.example.FireFly_frontend.clients.MidProductClient;
@@ -31,6 +32,7 @@ public class MidProductNeedController {
     private final MidProductNeedClient midProductNeedClient;
     private final MidProductClient midProductClient;
     private final FirstProductClient firstProductClient;
+    private final ExchangeClient exchangeClient;
 
     @GetMapping("/create/{id}")
     public String form(@PathVariable Long id, Model model, HttpServletRequest request) {
@@ -64,7 +66,12 @@ public class MidProductNeedController {
     public String findAllForFinalProduct(@PathVariable Long id, Model model,HttpServletRequest request){
         String token = (String) request.getSession().getAttribute("sessionToken");
         List<MidProductNeedDTO> allProducts = midProductNeedClient.findAllForFinalProduct(id,token);
+        Double tryExchangeRate = exchangeClient.exchangeEuroToTRY();
         MidProductDTO midProductDTO = midProductClient.findById(id,token);
+        Double finalCost = midProductNeedClient.calculateCost(id,token);
+        midProductDTO.setTryPrice(midProductDTO.getPrice()*tryExchangeRate);
+        midProductDTO.setFinalCost(finalCost);
+        midProductDTO.setTryFinalCost(finalCost*tryExchangeRate);
         model.addAttribute("midProductId", id);
         model.addAttribute("products", allProducts);
         model.addAttribute("midProduct", midProductDTO);
