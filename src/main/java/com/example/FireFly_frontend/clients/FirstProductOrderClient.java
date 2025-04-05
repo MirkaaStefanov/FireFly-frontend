@@ -1,6 +1,7 @@
 package com.example.FireFly_frontend.clients;
 
 import com.example.FireFly_frontend.dtos.FirstProductOrderDTO;
+import com.example.FireFly_frontend.enums.MaterialType;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,4 +19,8 @@ public interface FirstProductOrderClient {
 
     @GetMapping("/all")
     List<FirstProductOrderDTO> findAllFirstProductOrders(@RequestHeader("Authorization") String auth);
+
+    @GetMapping("/allByMaterialType")
+    List<FirstProductOrderDTO> findAllFirstProductOrders(@RequestParam MaterialType materialType, @RequestHeader("Authorization") String auth);
+
 }

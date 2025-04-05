@@ -5,6 +5,7 @@ import com.example.FireFly_frontend.clients.FirstProductOrderClient;
 import com.example.FireFly_frontend.dtos.FinalProductDTO;
 import com.example.FireFly_frontend.dtos.FirstProductDTO;
 import com.example.FireFly_frontend.dtos.FirstProductOrderDTO;
+import com.example.FireFly_frontend.enums.MaterialType;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,4 +50,11 @@ public class FirstProductOrderController {
         return "FirstProductOrder/all";
     }
 
+    @GetMapping("/all-metal")
+    public String allFinalProductOrdersThatAreMetal(Model model, HttpServletRequest request){
+        String token = (String) request.getSession().getAttribute("sessionToken");
+        List<FirstProductOrderDTO> finalProductOrderDTOS = firstProductOrderClient.findAllFirstProductOrders(MaterialType.METAL,token);
+        model.addAttribute("allProducts", finalProductOrderDTOS);
+        return "FirstProductOrder/all-metals";
+    }
 }
