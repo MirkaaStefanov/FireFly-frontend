@@ -12,6 +12,41 @@ body {
     font-size: 15px;
 }
 
+.filter-btn-group .filter-btn {
+    /* Apply the same base style as the main add button */
+    background-color: #cde952;
+    border-color: #cde952;
+    color: #333;
+    font-weight: 500; /* Slightly less bold than main button maybe */
+    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.1s ease, box-shadow 0.15s ease-in-out;
+    /* btn-sm styles are applied via Bootstrap class */
+}
+
+.filter-btn-group .filter-btn:hover {
+    /* Apply the same hover style */
+    background-color: #bacc4f;
+    border-color: #bacc4f;
+    color: #333;
+    transform: translateY(-1px);
+}
+
+/* Style for the ACTIVE filter button */
+.filter-btn-group .filter-btn.active {
+    background-color: #adb94e; /* A darker shade for active state */
+    border-color: #a0ac48;
+    color: #fff; /* White text for better contrast on darker active bg */
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.15); /* Inset shadow to look pressed */
+    transform: translateY(0); /* Override hover transform */
+}
+
+/* Ensure focus state doesn't look weird with active state */
+.filter-btn-group .filter-btn:focus {
+     box-shadow: 0 0 0 0.2rem rgba(205, 233, 82, 0.35); /* Optional: keep focus ring similar */
+}
+.filter-btn-group .filter-btn.active:focus {
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.15), 0 0 0 0.2rem rgba(205, 233, 82, 0.35); /* Combine inset and focus ring */
+}
+
 /* === Sidebar Styles === */
 .sidebar { width: 240px; background-color: #ffffff; padding: 20px 0; height: 100vh; position: fixed; left: 0; top: 0; display: flex; flex-direction: column; transition: width 0.3s ease; z-index: 1000; border-right: 1px solid #e0e0e0; }
 .sidebar-header { padding: 0 20px 20px 20px; text-align: center; position: relative; }
