@@ -60,8 +60,13 @@
       <tbody>
       <tr th:each="product : ${allProducts}" class="product-row">
         <td>
-          <img th:src="${product.firstProduct.image != null ? 'data:image/jpeg;base64,' + product.firstProduct.image : '/img/photos/noImage.png'}"
+          <img th:if="${product.firstProduct.image != null}"
+               th:src="'data:image/jpeg;base64,' + ${product.firstProduct.image}"
                alt="Product Image" class="product-table-image">
+
+          <img th:if="${product.firstProduct.image == null}"
+               th:src="@{/img/photos/noImage.png}"
+               alt="No Image" class="product-table-image">
         </td>
         <td th:text="${product.id}"></td>
         <td th:text="${product.firstProduct.name}"></td>

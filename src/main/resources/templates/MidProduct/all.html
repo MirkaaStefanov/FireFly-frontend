@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Birlesik Aletler - Продукти</title>
-  <link rel="icon" type="image/x-icon" href="/img/photos/noImage.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birlesik Aletler - Продукти</title>
+    <link rel="icon" type="image/x-icon" href="/img/photos/noImage.png">
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
 
@@ -16,145 +16,160 @@
 
 <div class="main-content">
 
-  <div class="page-header">
-    <h1 class="page-title">Birlesik Aletler</h1>
-  </div>
-
-  <div class="table-container enhanced-container">
-
-    <th:block th:if="${session.sessionRole == 'ADMIN'}">
-      <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4 class="mb-0">
-          <span class="exchange-rate-badge" th:text="'1 EUR = ' + ${exchangeRate} + ' TL'"></span>
-        </h4>
-      </div>
-    </th:block>
-
-    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
-
-      <div class="flex-grow-1" style="min-width: 250px; max-width: 600px;">
-        <div class="search-container">
-          <i class="fas fa-search search-icon"></i>
-          <input type="text" id="searchInput" class="form-control search-input"
-                 placeholder="Търсене по Име на компонент...">
-        </div>
-        <div class="mt-2 search-results-display">
-          <span class="text-muted small">Резултати: </span>
-          <span id="resultsCount" class="results-badge">0</span>
-        </div>
-      </div>
-      <div class="flex-shrink-0">
-        <a th:href="@{/midProduct/create}" class="btn btn-add-product">
-          <i class="fas fa-plus me-1"></i> Birlesik malzeme ekle </a>
-      </div>
+    <div class="page-header">
+        <h1 class="page-title">Birlesik Aletler</h1>
     </div>
 
-    <div class="table-responsive">
-      <table class="table table-hover align-middle enhanced-table">
-        <thead>
-        <tr>
-          <th scope="col">Снимка</th>
-          <th scope="col">ID</th>
-          <th scope="col">Име</th>
-          <th scope="col">Описание</th>
-          <th scope="col" class="text-end">Цена(EUR)</th>
-          <th scope="col" class="text-end">Цена(TL)</th>
-          <th scope="col" class="text-center">Наличност</th>
-          <th scope="col" class="text-center">Действия</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="product : ${products}" class="product-row">
-          <td>
-            <img th:src="'data:image/jpeg;base64,' + ${product.image}" alt="Product Image" class="product-table-image">
-          </td>
-          <td th:text="${product.id}"></td>
-          <td th:text="${product.name}"></td>
-          <td>
-            <small class="text-muted" th:text="${product.description}"></small>
-          </td>
-          <th:block th:if="${session.sessionRole == 'ADMIN'}">
-            <td class="text-end price-cell"
-                th:text="${#numbers.formatDecimal(product.price, 1, 'COMMA', 2, 'POINT') + ' EUR'}"></td>
-            <td class="text-end price-cell"
-                th:text="${#numbers.formatDecimal(product.tryPrice, 1, 'COMMA', 2, 'POINT') + ' TL'}">
-            </td>
-          </th:block> <td class="text-center">
-            <span th:if="${product.quantity <= 50}" class="badge bg-danger quantity-badge" th:text="${product.quantity + ' бр.'}"></span>
-            <span th:if="${product.quantity > 50 and product.quantity <= 200}" class="badge bg-warning text-dark quantity-badge" th:text="${product.quantity + ' бр.'}"></span>
-            <span th:if="${product.quantity > 200}" class="badge bg-success quantity-badge" th:text="${product.quantity + ' бр.'}"></span>
-          </td>
-          <td class="text-center">
-            <a th:href="@{/midProductNeed/all/{id}(id=${product.id})}" class="btn btn-warning btn-sm action-button">Needed</a>
-          </td>
-        </tr>
-        <tr th:if="${#lists.isEmpty(products)}">
-          <td colspan="7" class="text-center text-muted p-5">Няма налични продукти.</td>
-        </tr>
-        </tbody>
-      </table>
-    </div></div> </div> <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <div class="table-container enhanced-container">
+
+        <th:block th:if="${session.sessionRole == 'ADMIN'}">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="mb-0">
+                    <span class="exchange-rate-badge" th:text="'1 EUR = ' + ${exchangeRate} + ' TL'"></span>
+                </h4>
+            </div>
+        </th:block>
+
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+
+            <div class="flex-grow-1" style="min-width: 250px; max-width: 600px;">
+                <div class="search-container">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" id="searchInput" class="form-control search-input"
+                           placeholder="Търсене по Име на компонент...">
+                </div>
+                <div class="mt-2 search-results-display">
+                    <span class="text-muted small">Резултати: </span>
+                    <span id="resultsCount" class="results-badge">0</span>
+                </div>
+            </div>
+            <div class="flex-shrink-0">
+                <a th:href="@{/midProduct/create}" class="btn btn-add-product">
+                    <i class="fas fa-plus me-1"></i> Birlesik malzeme ekle </a>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle enhanced-table">
+                <thead>
+                <tr>
+                    <th scope="col">Снимка</th>
+                    <th scope="col">ID</th>
+                    <th scope="col">Име</th>
+                    <th scope="col">Описание</th>
+                    <th scope="col" class="text-end">Цена(EUR)</th>
+                    <th scope="col" class="text-end">Цена(TL)</th>
+                    <th scope="col" class="text-center">Наличност</th>
+                    <th scope="col" class="text-center">Действия</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="product : ${products}" class="product-row">
+                    <td>
+                        <img th:if="${product.image != null}"
+                             th:src="'data:image/jpeg;base64,' + ${product.image}"
+                             alt="Product Image" class="product-table-image">
+
+                        <img th:if="${product.image == null}"
+                             th:src="@{/img/photos/noImage.png}"
+                             alt="No Image" class="product-table-image">
+                    </td>
+                    <td th:text="${product.id}"></td>
+                    <td th:text="${product.name}"></td>
+                    <td>
+                        <small class="text-muted" th:text="${product.description}"></small>
+                    </td>
+                    <th:block th:if="${session.sessionRole == 'ADMIN'}">
+                        <td class="text-end price-cell"
+                            th:text="${#numbers.formatDecimal(product.price, 1, 'COMMA', 2, 'POINT') + ' EUR'}"></td>
+                        <td class="text-end price-cell"
+                            th:text="${#numbers.formatDecimal(product.tryPrice, 1, 'COMMA', 2, 'POINT') + ' TL'}">
+                        </td>
+                    </th:block>
+                    <td class="text-center">
+                        <span th:if="${product.quantity <= 50}" class="badge bg-danger quantity-badge"
+                              th:text="${product.quantity + ' бр.'}"></span>
+                        <span th:if="${product.quantity > 50 and product.quantity <= 200}"
+                              class="badge bg-warning text-dark quantity-badge"
+                              th:text="${product.quantity + ' бр.'}"></span>
+                        <span th:if="${product.quantity > 200}" class="badge bg-success quantity-badge"
+                              th:text="${product.quantity + ' бр.'}"></span>
+                    </td>
+                    <td class="text-center">
+                        <a th:href="@{/midProductNeed/all/{id}(id=${product.id})}"
+                           class="btn btn-warning btn-sm action-button">Needed</a>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(products)}">
+                    <td colspan="7" class="text-center text-muted p-5">Няма налични продукти.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-  // Sidebar Toggle Function
-  function toggleSidebar() {
-      document.querySelector('.sidebar').classList.toggle('collapsed');
-      document.querySelector('.main-content').classList.toggle('sidebar-collapsed');
-  }
-  // Optional: Collapse sidebar by default on smaller screens
-  // if (window.innerWidth < 768) { ... }
+    // Sidebar Toggle Function
+    function toggleSidebar() {
+        document.querySelector('.sidebar').classList.toggle('collapsed');
+        document.querySelector('.main-content').classList.toggle('sidebar-collapsed');
+    }
+    // Optional: Collapse sidebar by default on smaller screens
+    // if (window.innerWidth < 768) { ... }
 
-  // ## START: Search Bar JavaScript ##
-  document.addEventListener('DOMContentLoaded', function () {
-      const searchInput = document.getElementById('searchInput');
-      const resultsCount = document.getElementById('resultsCount');
-      // Ensure selector targets rows within the correct table body
-      const productRows = document.querySelectorAll('.enhanced-table tbody .product-row');
-      const initialCount = productRows.length; // Get initial count
+    // ## START: Search Bar JavaScript ##
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchInput = document.getElementById('searchInput');
+        const resultsCount = document.getElementById('resultsCount');
+        // Ensure selector targets rows within the correct table body
+        const productRows = document.querySelectorAll('.enhanced-table tbody .product-row');
+        const initialCount = productRows.length; // Get initial count
 
-      // Function to update table based on search
-      function filterTable() {
-          const filter = searchInput.value.toLowerCase().trim();
-          let visibleCount = 0;
+        // Function to update table based on search
+        function filterTable() {
+            const filter = searchInput.value.toLowerCase().trim();
+            let visibleCount = 0;
 
-          productRows.forEach(row => {
-              // Target correct columns for Name (3rd child) and Description (4th child)
-              const nameCell = row.querySelector('td:nth-child(3)');
-              const descriptionCell = row.querySelector('td:nth-child(4)');
+            productRows.forEach(row => {
+                // Target correct columns for Name (3rd child) and Description (4th child)
+                const nameCell = row.querySelector('td:nth-child(3)');
+                const descriptionCell = row.querySelector('td:nth-child(4)');
 
-              // Check if cells exist before accessing textContent
-              const name = nameCell ? nameCell.textContent.toLowerCase() : '';
-              const description = descriptionCell ? descriptionCell.textContent.toLowerCase() : '';
+                // Check if cells exist before accessing textContent
+                const name = nameCell ? nameCell.textContent.toLowerCase() : '';
+                const description = descriptionCell ? descriptionCell.textContent.toLowerCase() : '';
 
-              if (name.includes(filter) || description.includes(filter)) {
-                  row.style.display = ''; // Show row
-                  visibleCount++;
-              } else {
-                  row.style.display = 'none'; // Hide row
-              }
-          });
+                if (name.includes(filter) || description.includes(filter)) {
+                    row.style.display = ''; // Show row
+                    visibleCount++;
+                } else {
+                    row.style.display = 'none'; // Hide row
+                }
+            });
 
-          resultsCount.textContent = visibleCount;
-      }
+            resultsCount.textContent = visibleCount;
+        }
 
-      // Initial count display
-       resultsCount.textContent = initialCount;
-
-
-      // Add event listener to the search input
-      if (searchInput) {
-          searchInput.addEventListener('input', filterTable);
-      } else {
-          console.error("Search input element not found!");
-      }
-
-       // Also update count display on initial load
-       resultsCount.textContent = document.querySelectorAll('.enhanced-table tbody .product-row[style*="display: none;"]').length > 0
-          ? document.querySelectorAll('.enhanced-table tbody .product-row:not([style*="display: none;"])').length
-          : initialCount;
+        // Initial count display
+         resultsCount.textContent = initialCount;
 
 
-  });
-  // ## END: Search Bar JavaScript ##
+        // Add event listener to the search input
+        if (searchInput) {
+            searchInput.addEventListener('input', filterTable);
+        } else {
+            console.error("Search input element not found!");
+        }
+
+         // Also update count display on initial load
+         resultsCount.textContent = document.querySelectorAll('.enhanced-table tbody .product-row[style*="display: none;"]').length > 0
+            ? document.querySelectorAll('.enhanced-table tbody .product-row:not([style*="display: none;"])').length
+            : initialCount;
+
+
+    });
+    // ## END: Search Bar JavaScript ##
 </script>
 
 </body>

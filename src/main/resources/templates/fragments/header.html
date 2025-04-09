@@ -80,7 +80,14 @@
         </a>
       </li>
     </th:block>
+    <th:block th:if="${session.sessionRole == 'METALIST'}">
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/firstProductOrder/all-metal}">
+          <i class="fas fa-tools fa-fw me-2"></i> <span class="nav-text">Metal siparisler</span>
+        </a>
+      </li>
 
+    </th:block>
   </ul>
 </div>
 
