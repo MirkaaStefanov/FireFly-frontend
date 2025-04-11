@@ -79,8 +79,7 @@
                   th:text="${product.quantity + ' бр.'}"></span>
           </td>
           <td class="text-center">
-            <a th:href="@{/finalProductNeed/all/{id}(id=${product.id})}"
-               class="btn btn-warning btn-sm action-button">Needed</a>
+
           </td>
         </tr>
         <tr th:if="${#lists.isEmpty(allProducts)}">

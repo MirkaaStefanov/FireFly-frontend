@@ -82,9 +82,9 @@
           <span th:if="${product.quantity > 200}" class="badge bg-success quantity-badge"
                 th:text="${product.quantity + ' бр.'}"></span>
         </td>
-        <td th:text="${product.firstProduct.materialType}"></td> <td class="text-center">
-        <a th:href="@{/firstProductNeed/all/{id}(id=${product.id})}"
-           class="btn btn-warning btn-sm action-button">Needed</a>
+        <td th:text="${product.firstProduct.materialType}"></td>
+        <td class="text-center">
+
       </td>
       </tr>
       <tr th:if="${#lists.isEmpty(allProducts)}">
