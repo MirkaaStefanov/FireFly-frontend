@@ -6,6 +6,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,12 +25,12 @@ public interface FinalProductClient {
     List<FinalProductDTO> findAll(@RequestHeader("Authorization") String auth);
 
     @GetMapping("/findById/{id}")
-    FinalProductDTO findById(@RequestParam Long id, @RequestHeader("Authorization") String auth);
+    FinalProductDTO findById(@PathVariable Long id, @RequestHeader("Authorization") String auth);
 
     @PutMapping("/edit/{id}")
-    FinalProductDTO update(@RequestParam Long id, @RequestBody FinalProductDTO finalProductDTO, @RequestHeader("Authorization") String auth);
+    FinalProductDTO update(@PathVariable Long id, @RequestBody FinalProductDTO finalProductDTO, @RequestHeader("Authorization") String auth);
 
     @DeleteMapping("/delete/{id}")
-    void delete(@RequestParam Long id, @RequestHeader("Authorization") String auth);
+    void delete(@PathVariable Long id, @RequestHeader("Authorization") String auth);
 
 }

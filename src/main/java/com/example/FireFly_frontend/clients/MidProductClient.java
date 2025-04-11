@@ -5,6 +5,7 @@ import com.example.FireFly_frontend.dtos.MidProductDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,11 +23,11 @@ public interface MidProductClient {
     List<MidProductDTO> findAll(@RequestHeader("Authorization") String auth);
 
     @GetMapping("/findById/{id}")
-    MidProductDTO findById(@RequestParam Long id,@RequestHeader("Authorization") String auth);
+    MidProductDTO findById(@PathVariable Long id,@RequestHeader("Authorization") String auth);
 
     @PutMapping("/edit/{id}")
-    MidProductDTO update(@RequestParam Long id, @RequestBody MidProductDTO midProductDTO, @RequestHeader("Authorization") String auth);
+    MidProductDTO update(@PathVariable Long id, @RequestBody MidProductDTO midProductDTO, @RequestHeader("Authorization") String auth);
 
     @DeleteMapping("/delete/{id}")
-    void delete(@RequestParam Long id, @RequestHeader("Authorization") String auth);
+    void delete(@PathVariable Long id, @RequestHeader("Authorization") String auth);
 }

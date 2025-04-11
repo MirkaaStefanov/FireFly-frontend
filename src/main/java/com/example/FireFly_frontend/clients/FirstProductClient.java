@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,11 +27,11 @@ public interface FirstProductClient {
     List<FirstProductDTO> findAll(@RequestHeader("Authorization") String auth);
 
     @GetMapping("/findById/{id}")
-    FirstProductDTO findById(@RequestParam Long id,@RequestHeader("Authorization") String auth);
+    FirstProductDTO findById(@PathVariable Long id,@RequestHeader("Authorization") String auth);
 
     @PutMapping("/edit/{id}")
-    FirstProductDTO update(@RequestParam Long id, @RequestBody FirstProductDTO firstProductDTO, @RequestHeader("Authorization") String auth);
+    FirstProductDTO update(@PathVariable Long id, @RequestBody FirstProductDTO firstProductDTO, @RequestHeader("Authorization") String auth);
 
     @DeleteMapping("/delete/{id}")
-    void delete(@RequestParam Long id, @RequestHeader("Authorization") String auth);
+    void delete(@PathVariable Long id, @RequestHeader("Authorization") String auth);
 }
