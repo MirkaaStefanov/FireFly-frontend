@@ -94,7 +94,23 @@
           </td>
           <td th:text="${product.materialType}"></td>
           <td class="text-center">
-            <a th:href="@{/firstProductNeed/all/{id}(id=${product.id})}" class="btn btn-warning btn-sm action-button">Needed</a>
+
+            <th:block th:if="${session.sessionToken != null and session.sessionRole == 'ADMIN'}">
+              <div class="btn-container">
+                <a th:href="@{/firstProduct/edit/{id}(id=${product.id})}"
+                   class="btn btn-sm btn-outline-primary me-1" title="Duzenle"
+                   onclick="return confirm('Duzenlemek istediginize emin misiniz?');">
+                  <i class="fas fa-edit"></i>
+                </a>
+                <form th:action="@{/firstProduct/delete/{id}(id=${product.id})}" method="post"
+                      onsubmit="return confirm('Сигурни ли сте, че искате да изтриете това изискване?');">
+                  <button type="submit" class="btn btn-sm btn-outline-danger" title="Sil">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </form>
+              </div>
+
+            </th:block>
           </td>
         </tr>
         <tr th:if="${#lists.isEmpty(products)}">
