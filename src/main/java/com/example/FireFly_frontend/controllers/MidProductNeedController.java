@@ -15,11 +15,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
@@ -77,5 +79,30 @@ public class MidProductNeedController {
         model.addAttribute("midProduct", midProductDTO);
         return "MidProductNeed/allForProduct";
     }
+
+    @GetMapping("/edit/{id}")
+    public String update(@PathVariable Long id, Model model, HttpServletRequest request) {
+        String token = (String) request.getSession().getAttribute("sessionToken");
+        MidProductNeedDTO midProductDTO = midProductNeedClient.findById(id, token);
+        model.addAttribute("product", midProductDTO);
+        return "MidProductNeed/edit";
+    }
+
+    @PostMapping("/edit/{id}")
+    public String updateSubmit(@PathVariable Long id, @ModelAttribute MidProductNeedDTO product, HttpServletRequest request) throws IOException {
+        String token = (String) request.getSession().getAttribute("sessionToken");
+        MidProductNeedDTO midProductDTO = midProductNeedClient.findById(id, token);
+        midProductNeedClient.update(id, product, token);
+        return "redirect:/midProductNeed/all/"+midProductDTO.getMidProduct().getId();
+    }
+
+    @PostMapping("/delete/{id}")
+    public String updateSubmit(@PathVariable Long id, HttpServletRequest request) {
+        String token = (String) request.getSession().getAttribute("sessionToken");
+        MidProductNeedDTO midProductDTO = midProductNeedClient.findById(id, token);
+        midProductNeedClient.delete(id, token);
+        return "redirect:/midProductNeed/all/"+midProductDTO.getMidProduct().getId();
+    }
+
 
 }

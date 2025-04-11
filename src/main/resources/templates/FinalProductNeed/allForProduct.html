@@ -76,15 +76,22 @@
           </td>
           <td class="text-center">
             <th:block th:if="${session.sessionToken != null and session.sessionRole == 'ADMIN'}">
-              <a th:href="@{/finalProductNeed/edit/{id}(id=${need.id})}"
-                 class="btn btn-sm btn-outline-primary me-1" title="Редактирай">
-                <i class="fas fa-edit"></i>
-              </a>
-              <a th:href="@{/finalProductNeed/delete/{id}(id=${need.id})}"
-                 class="btn btn-sm btn-outline-danger" title="Изтрий"
-                 onclick="return confirm('Сигурни ли сте, че искате да изтриете това изискване?');"> <i class="fas fa-trash"></i>
-              </a>
+              <div class="btn-container">
+                <a th:href="@{/finalProductNeed/edit/{id}(id=${need.id})}"
+                   class="btn btn-sm btn-outline-primary me-1" title="Изтрий"
+                   onclick="return confirm('Duzenlemek istediginize emin misiniz?');">
+                  <i class="fas fa-edit"></i>
+                </a>
+                <form th:action="@{/finalProductNeed/delete/{id}(id=${need.id})}" method="post"
+                      onsubmit="return confirm('Сигурни ли сте, че искате да изтриете това изискване?');">
+                  <button type="submit" class="btn btn-sm btn-outline-danger" title="Изтрий">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </form>
+              </div>
+
             </th:block>
+
           </td>
         </tr>
         <tr th:if="${#lists.isEmpty(products)}">
